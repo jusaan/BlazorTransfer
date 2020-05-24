@@ -1,8 +1,10 @@
-﻿@using Microsoft.AspNetCore.Components.Web;
+﻿@typeparam TItem
+
+@using Microsoft.AspNetCore.Components.Web;
 
 @if (DataSource != null && DataSource.Any())
 {
-    targetKeysItems = DataSource.Where(d => TargetKeys.Any(t => t == d.GetType().GetProperty(ValueProperty).GetValue(d, null).ToString()));
+    targetKeysItems = DataSource.Where(d => Value.Any(t => t.Equals(d.GetType().GetProperty(ValueProperty).GetValue(d, null))));
     dataSourceItems = DataSource.Except(targetKeysItems);
     <div class="blazortransfer">
         <div class="blazortransfer-list">

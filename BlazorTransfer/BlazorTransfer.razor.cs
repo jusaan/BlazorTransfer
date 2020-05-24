@@ -4,19 +4,34 @@ using System.Linq;
 
 namespace TransferBlazor
 {
-    public partial class BlazorTransfer
+    public partial class BlazorTransfer<TItem> : ComponentBase
     {
         private bool allSourceKeysChecked;
         private bool allTargetKeysChecked;
         private string sourceSearch = string.Empty;
         private string targetSearch = string.Empty;
-        private List<string> selectedSourceKeys = new List<string>();
-        private List<string> selectedTargetKeys = new List<string>();
+        private List<object> selectedSourceKeys = new List<object>();
+        private List<object> selectedTargetKeys = new List<object>();
         private IEnumerable<object> dataSourceItems;
         private IEnumerable<object> targetKeysItems;
 
+        private IEnumerable<TItem> _value = new List<TItem>();
+
+        [Parameter] 
+        public IEnumerable<TItem> Value 
+        {
+            get => _value;
+            set
+            {
+                if (_value.Equals(value)) return;
+
+                _value = value;
+                ValueChanged.InvokeAsync(value);
+            }
+        }
+
+        [Parameter] public EventCallback<IEnumerable<TItem>> ValueChanged { get; set; }
         [Parameter] public IEnumerable<object> DataSource { get; set; }
-        [Parameter] public IEnumerable<string> TargetKeys { get; set; } = new List<string>();
         [Parameter] public string TextProperty { get; set; }
         [Parameter] public string ValueProperty { get; set; }
         [Parameter] public bool ShowSearch { get; set; }
@@ -25,25 +40,25 @@ namespace TransferBlazor
 
         private void SourceCheckboxClicked(ChangeEventArgs e, object value)
         {
-            if ((bool)e.Value && !selectedSourceKeys.Contains(value.ToString()))
+            if ((bool)e.Value && !selectedSourceKeys.Contains(value))
             {
-                selectedSourceKeys.Add(value.ToString());
+                selectedSourceKeys.Add(value);
             }
-            else if (!(bool)e.Value && selectedSourceKeys.Contains(value.ToString()))
+            else if (!(bool)e.Value && selectedSourceKeys.Contains(value))
             {
-                selectedSourceKeys.Remove(value.ToString());
+                selectedSourceKeys.Remove(value);
             }
         }
 
         private void TargetCheckboxClicked(ChangeEventArgs e, object value)
         {
-            if ((bool)e.Value && !selectedTargetKeys.Contains(value.ToString()))
+            if ((bool)e.Value && !selectedTargetKeys.Contains(value))
             {
-                selectedTargetKeys.Add(value.ToString());
+                selectedTargetKeys.Add(value);
             }
-            else if (!(bool)e.Value && selectedTargetKeys.Contains(value.ToString()))
+            else if (!(bool)e.Value && selectedTargetKeys.Contains(value))
             {
-                selectedTargetKeys.Remove(value.ToString());
+                selectedTargetKeys.Remove(value);
             }
         }
 
@@ -54,7 +69,7 @@ namespace TransferBlazor
                 selectedSourceKeys.Clear();
                 allSourceKeysChecked = true;
                 selectedSourceKeys.AddRange(((IEnumerable<object>)value)
-                    .Select(x => x.GetType().GetProperty(ValueProperty).GetValue(x, null).ToString()));
+                    .Select(x => x.GetType().GetProperty(ValueProperty).GetValue(x, null)));
 
             }
             else
@@ -71,7 +86,7 @@ namespace TransferBlazor
                 selectedTargetKeys.Clear();
                 allTargetKeysChecked = true;
                 selectedTargetKeys.AddRange(((IEnumerable<object>)value)
-                    .Select(x => x.GetType().GetProperty(ValueProperty).GetValue(x, null).ToString()));
+                    .Select(x => x.GetType().GetProperty(ValueProperty).GetValue(x, null)));
             }
             else
             {
@@ -82,14 +97,14 @@ namespace TransferBlazor
 
         private void AddTargetKeys()
         {
-            TargetKeys = TargetKeys.Concat(selectedSourceKeys).ToList();
+            Value = Value.Concat(selectedSourceKeys.Cast<TItem>()).ToList();
             selectedSourceKeys.Clear();
             allSourceKeysChecked = false;
         }
 
         private void RemoveTargetKeys()
         {
-            TargetKeys = TargetKeys.Except(selectedTargetKeys).ToList();
+            Value = Value.Except(selectedTargetKeys.Cast<TItem>()).ToList();
             selectedTargetKeys.Clear();
             allTargetKeysChecked = false;
         }
