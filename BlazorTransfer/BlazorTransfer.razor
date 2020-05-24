@@ -1,5 +1,4 @@
-﻿
-@using Microsoft.AspNetCore.Components.Web;
+﻿@using Microsoft.AspNetCore.Components.Web;
 
 @if (DataSource != null && DataSource.Any())
 {
@@ -8,13 +7,13 @@
     <div class="blazortransfer">
         <div class="blazortransfer-list">
             <div class="blazortransfer-header">
-                <input class="blazortransfer-checkbox" type="checkbox" checked="@(dataSourceItems.Count() == selectedSourceKeys.Count())" disabled="@(!dataSourceItems.Any())" @onchange="@((e) => SelectAllSourceCheckboxClicked(e, dataSourceItems))"> @selectedSourceKeys.Count()/@dataSourceItems.Count() <span>items</span>
+                <input class="blazortransfer-checkbox" type="checkbox" checked="@(dataSourceItems.Count() == selectedSourceKeys.Count())" disabled="@(!dataSourceItems.Any())" @onchange="@((e) => SelectAllSourceCheckboxClicked(e, dataSourceItems))"> @selectedSourceKeys.Count()/@dataSourceItems.Count() <span>@HeaderText</span>
             </div>
             <hr style="margin: 0" />
             @if (ShowSearch)
             {
                 <div class="blazortransfer-search">
-                    <input type="search" placeholder="Search here" @bind-value="sourceSearch" @bind-value:event="oninput" />
+                    <input type="search" placeholder="@SearchPlaceholder" @bind-value="sourceSearch" @bind-value:event="oninput" />
                 </div>
             }
             <ul>
@@ -38,13 +37,13 @@
         </div>
         <div class="blazortransfer-list">
             <div class="blazortransfer-header">
-                <input class="blazortransfer-checkbox" type="checkbox" checked="@(targetKeysItems.Count() == selectedTargetKeys.Count())" disabled="@(!targetKeysItems.Any())" @onchange="@((e) => SelectAllTargetCheckboxClicked(e, targetKeysItems))"> @selectedTargetKeys.Count()/@targetKeysItems.Count() <span>items</span>
+                <input class="blazortransfer-checkbox" type="checkbox" checked="@(targetKeysItems.Count() == selectedTargetKeys.Count())" disabled="@(!targetKeysItems.Any())" @onchange="@((e) => SelectAllTargetCheckboxClicked(e, targetKeysItems))"> @selectedTargetKeys.Count()/@targetKeysItems.Count() <span>@HeaderText</span>
             </div>
             <hr style="margin: 0" />
             @if (ShowSearch)
             {
                 <div class="blazortransfer-search">
-                    <input type="search" placeholder="Search here" @bind-value="targetSearch" @bind-value:event="oninput" />
+                    <input type="search" placeholder="@SearchPlaceholder" @bind-value="targetSearch" @bind-value:event="oninput" />
                 </div>
             }
             <ul>

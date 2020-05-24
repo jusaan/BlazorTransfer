@@ -7,8 +7,10 @@
     <Description>A JavaScript free Transfer (Dual List) library for Blazor applications</Description>
     <Authors>Juxant</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageTags>Transfer, Dual List, List, DualList, In Out, inOut</PackageTags>
+    <PackageTags>Blazor, Components, Transfer, Dual List, List, DualList, In Out, inOut</PackageTags>
     <RepositoryUrl>https://github.com/juxant/BlazorTransfer</RepositoryUrl>
+    <Version>1.0.1</Version>
+    <PackageProjectUrl>https://github.com/juxant/BlazorTransfer</PackageProjectUrl>
   </PropertyGroup>
 
 

@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Components;
-using Microsoft.AspNetCore.Components.Web;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -21,6 +20,8 @@ namespace TransferBlazor
         [Parameter] public string TextProperty { get; set; }
         [Parameter] public string ValueProperty { get; set; }
         [Parameter] public bool ShowSearch { get; set; }
+        [Parameter] public string SearchPlaceholder { get; set; } = "Search here";
+        [Parameter] public string HeaderText { get; set; } = "items";
 
         private void SourceCheckboxClicked(ChangeEventArgs e, object value)
         {
