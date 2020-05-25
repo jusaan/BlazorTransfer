@@ -9,7 +9,7 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Blazor, Components, Transfer, Dual List, DualList, In Out, inOut</PackageTags>
     <RepositoryUrl>https://github.com/juxant/BlazorTransfer</RepositoryUrl>
-    <Version>1.0.3</Version>
+    <Version>1.0.4</Version>
     <PackageProjectUrl>https://github.com/juxant/BlazorTransfer</PackageProjectUrl>
   </PropertyGroup>
 

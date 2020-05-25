@@ -18,20 +18,28 @@
                     <input type="search" placeholder="@SearchPlaceholder" @bind-value="sourceSearch" @bind-value:event="oninput" />
                 </div>
             }
-            <ul>
-                @foreach (var item in dataSourceItems.Where(x => x.GetType().GetProperty(TextProperty).GetValue(x, null).ToString().ToLower().Contains(sourceSearch.ToLower()) || string.IsNullOrEmpty(sourceSearch)))
-                {
-                    var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
-                    var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
 
-                    <li @key="value">
-                        <label class="blazortransfer-item-description" title="@text">
-                            
-                            <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allSourceKeysChecked" @onchange="@((e) => SourceCheckboxClicked(e, value))" /> <span>@text</span>
-                        </label>
-                    </li>
-                }
-            </ul>
+            @if (!dataSourceItems.Any())
+            {
+                <p class="blazortransfer-empty">&#128449;</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in dataSourceItems.Where(x => x.GetType().GetProperty(TextProperty).GetValue(x, null).ToString().ToLower().Contains(sourceSearch.ToLower()) || string.IsNullOrEmpty(sourceSearch)))
+                    {
+                        var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
+                        var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
+
+                        <li @key="value">
+                            <label class="blazortransfer-item-description" title="@text">
+
+                                <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allSourceKeysChecked" @onchange="@((e) => SourceCheckboxClicked(e, value))" /> <span>@text</span>
+                            </label>
+                        </li>
+                    }
+                </ul>
+            }         
         </div>      
         <div style="display: grid">
             <button type="button" class="blazortransfer-button blazortransfer-button-left" disabled="@(!selectedTargetKeys.Any())" @onclick="@(() => RemoveTargetKeys())">&lt</button>
@@ -48,19 +56,27 @@
                     <input type="search" placeholder="@SearchPlaceholder" @bind-value="targetSearch" @bind-value:event="oninput" />
                 </div>
             }
-            <ul>
-                @foreach (var item in targetKeysItems.Where(x => x.GetType().GetProperty(TextProperty).GetValue(x, null).ToString().ToLower().Contains(targetSearch.ToLower()) || string.IsNullOrEmpty(targetSearch)))
-                {
-                    var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
-                    var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
 
-                    <li @key="value">
-                        <label class="blazortransfer-item-description" title="@text">
-                            <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allTargetKeysChecked" @onchange="@((e) => TargetCheckboxClicked(e, value))" /> <span>@text</span>
-                        </label>
-                    </li>
-                }
-            </ul>
+            @if (!targetKeysItems.Any())
+            {
+                <p class="blazortransfer-empty">&#128449;</p>
+            }
+            else
+            {
+                <ul>
+                    @foreach (var item in targetKeysItems.Where(x => x.GetType().GetProperty(TextProperty).GetValue(x, null).ToString().ToLower().Contains(targetSearch.ToLower()) || string.IsNullOrEmpty(targetSearch)))
+                    {
+                        var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
+                        var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
+
+                        <li @key="value">
+                            <label class="blazortransfer-item-description" title="@text">
+                                <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allTargetKeysChecked" @onchange="@((e) => TargetCheckboxClicked(e, value))" /> <span>@text</span>
+                            </label>
+                        </li>
+                    }
+                </ul>
+            }          
         </div>
     </div>
 }

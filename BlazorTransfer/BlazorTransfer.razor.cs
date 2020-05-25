@@ -14,11 +14,18 @@ namespace TransferBlazor
         private List<object> selectedTargetKeys = new List<object>();
         private IEnumerable<object> dataSourceItems;
         private IEnumerable<object> targetKeysItems;
-
         private IEnumerable<TItem> _value = new List<TItem>();
+        
+        [Parameter] public IEnumerable<object> DataSource { get; set; }
+        [Parameter] public string TextProperty { get; set; }
+        [Parameter] public string ValueProperty { get; set; }
+        [Parameter] public bool ShowSearch { get; set; }
+        [Parameter] public string SearchPlaceholder { get; set; } = "Type to search";
+        [Parameter] public string HeaderText { get; set; } = "items";
+        [Parameter] public EventCallback<IEnumerable<TItem>> ValueChanged { get; set; }
 
-        [Parameter] 
-        public IEnumerable<TItem> Value 
+        [Parameter]
+        public IEnumerable<TItem> Value
         {
             get => _value;
             set
@@ -29,14 +36,6 @@ namespace TransferBlazor
                 ValueChanged.InvokeAsync(value);
             }
         }
-
-        [Parameter] public EventCallback<IEnumerable<TItem>> ValueChanged { get; set; }
-        [Parameter] public IEnumerable<object> DataSource { get; set; }
-        [Parameter] public string TextProperty { get; set; }
-        [Parameter] public string ValueProperty { get; set; }
-        [Parameter] public bool ShowSearch { get; set; }
-        [Parameter] public string SearchPlaceholder { get; set; } = "Type to search";
-        [Parameter] public string HeaderText { get; set; } = "items";
 
         private void SourceCheckboxClicked(ChangeEventArgs e, object value)
         {
