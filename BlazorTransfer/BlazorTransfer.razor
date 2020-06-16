@@ -26,12 +26,12 @@
             else
             {
                 <ul>
-                    @foreach (var item in dataSourceItems.Where(x => x.GetType().GetProperty(TextProperty).GetValue(x, null).ToString().ToLower().Contains(sourceSearch.ToLower()) || string.IsNullOrEmpty(sourceSearch)))
+                    @foreach (var item in dataSourceItems)
                     {
                         var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
                         var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
 
-                        <li @key="value">
+                        <li @key="value" style="display: @(text.ToString().ToLower().Contains(sourceSearch.ToLower()) || string.IsNullOrEmpty(sourceSearch) ? "block" : "none")">
                             <label class="blazortransfer-item-description" title="@text">
 
                                 <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allSourceKeysChecked" @onchange="@((e) => SourceCheckboxClicked(e, value))" /> <span>@text</span>
@@ -64,12 +64,12 @@
             else
             {
                 <ul>
-                    @foreach (var item in targetKeysItems.Where(x => x.GetType().GetProperty(TextProperty).GetValue(x, null).ToString().ToLower().Contains(targetSearch.ToLower()) || string.IsNullOrEmpty(targetSearch)))
+                    @foreach (var item in targetKeysItems)
                     {
                         var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
                         var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
 
-                        <li @key="value">
+                        <li @key="value" style="display: @(text.ToString().ToLower().Contains(sourceSearch.ToLower()) || string.IsNullOrEmpty(sourceSearch) ? "block" : "none")">
                             <label class="blazortransfer-item-description" title="@text">
                                 <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allTargetKeysChecked" @onchange="@((e) => TargetCheckboxClicked(e, value))" /> <span>@text</span>
                             </label>
