@@ -1,6 +1,8 @@
 # BlazorTransfer
 A JavaScript free Transfer (Dual List) library for [Blazor](https://blazor.net) applications
 
+![Nuget](https://img.shields.io/nuget/v/blazortransfer)
+
 ![gif of component in action](screenshot.gif)
 
 ## Getting Setup
