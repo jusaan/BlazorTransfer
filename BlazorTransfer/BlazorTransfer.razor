@@ -4,18 +4,24 @@
 
 @if (DataSource != null && DataSource.Any())
 {
-    targetKeysItems = DataSource.Where(d => Value.Any(t => t.Equals(d.GetType().GetProperty(ValueProperty).GetValue(d, null))));
-    dataSourceItems = DataSource.Except(targetKeysItems);
+    var targetKeysItems = DataSource.Where(d => Value.Any(t => t.Equals(d.GetType().GetProperty(ValueProperty).GetValue(d, null))));
+    var dataSourceItems = DataSource.Except(targetKeysItems);
+
     <div class="blazortransfer">
         <div class="blazortransfer-list">
             <div class="blazortransfer-header">
-                <input class="blazortransfer-checkbox" type="checkbox" checked="@(dataSourceItems.Count() == selectedSourceKeys.Count())" disabled="@(!dataSourceItems.Any())" @onchange="@((e) => SelectAllSourceCheckboxClicked(e, dataSourceItems))"> @selectedSourceKeys.Count()/@dataSourceItems.Count() <span>@HeaderText</span>
+                <input type="checkbox" 
+                       class="blazortransfer-checkbox"                        
+                       checked="@(dataSourceItems.Count() == _selectedSourceKeys.Count())" 
+                       disabled="@(!dataSourceItems.Any())" 
+                       @onchange="@(e => SelectAllCheckboxClicked(e, dataSourceItems, _selectedSourceKeys))" /> 
+                <span>@($"{_selectedSourceKeys.Count()}/{dataSourceItems.Count()} {HeaderText}")</span>
             </div>
             <hr style="margin: 0" />
             @if (ShowSearch)
             {
                 <div class="blazortransfer-search">
-                    <input type="search" placeholder="@SearchPlaceholder" @bind-value="sourceSearch" @bind-value:event="oninput" />
+                    <input type="search" placeholder="@SearchPlaceholder" @bind-value="_sourceSearch" @bind-value:event="oninput" />
                 </div>
             }
 
@@ -31,10 +37,14 @@
                         var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
                         var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
 
-                        <li @key="value" style="display: @(text.ToString().ToLower().Contains(sourceSearch.ToLower()) || string.IsNullOrEmpty(sourceSearch) ? "block" : "none")">
+                        <li @key="value" style="display: @(text.ToString().ToLower().Contains(_sourceSearch.ToLower()) || string.IsNullOrEmpty(_sourceSearch) ? "block" : "none")">
                             <label class="blazortransfer-item-description" title="@text">
-
-                                <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allSourceKeysChecked" @onchange="@((e) => SourceCheckboxClicked(e, value))" /> <span>@text</span>
+                                <input class="blazortransfer-checkbox" 
+                                       type="checkbox" 
+                                       value="@value" 
+                                       checked="@(_selectedSourceKeys.Any(x => x.ToString() == value.ToString()))" 
+                                       @onchange="@(e => CheckboxClicked(e, value, _selectedSourceKeys))" /> 
+                                <span>@text</span>
                             </label>
                         </li>
                     }
@@ -42,18 +52,23 @@
             }         
         </div>      
         <div style="display: grid">
-            <button type="button" class="blazortransfer-button blazortransfer-button-left" disabled="@(!selectedTargetKeys.Any())" @onclick="@(() => RemoveTargetKeys())">&lt</button>
-            <button type="button" class="blazortransfer-button blazortransfer-button-right" disabled="@(!selectedSourceKeys.Any())" @onclick="@(() => AddTargetKeys())">&gt</button>
+            <button type="button" class="blazortransfer-button blazortransfer-button-left" disabled="@(!_selectedSourceKeys.Any())" @onclick="@(async () => await AddTargetKeys())">&gt</button>
+            <button type="button" class="blazortransfer-button blazortransfer-button-right" disabled="@(!_selectedTargetKeys.Any())" @onclick="@(async () => await RemoveTargetKeys())">&lt</button>
         </div>
         <div class="blazortransfer-list">
             <div class="blazortransfer-header">
-                <input class="blazortransfer-checkbox" type="checkbox" checked="@(targetKeysItems.Count() == selectedTargetKeys.Count())" disabled="@(!targetKeysItems.Any())" @onchange="@((e) => SelectAllTargetCheckboxClicked(e, targetKeysItems))"> @selectedTargetKeys.Count()/@targetKeysItems.Count() <span>@HeaderText</span>
+                <input type="checkbox"
+                       class="blazortransfer-checkbox"
+                       checked="@(targetKeysItems.Count() == _selectedTargetKeys.Count())"
+                       disabled="@(!targetKeysItems.Any())"
+                       @onchange="@(e => SelectAllCheckboxClicked(e, targetKeysItems, _selectedTargetKeys))" />
+                <span>@($"{_selectedTargetKeys.Count()}/{targetKeysItems.Count()} {HeaderText}")</span>
             </div>
             <hr style="margin: 0" />
             @if (ShowSearch)
             {
                 <div class="blazortransfer-search">
-                    <input type="search" placeholder="@SearchPlaceholder" @bind-value="targetSearch" @bind-value:event="oninput" />
+                    <input type="search" placeholder="@SearchPlaceholder" @bind-value="_targetSearch" @bind-value:event="oninput" />
                 </div>
             }
 
@@ -69,9 +84,14 @@
                         var value = item.GetType().GetProperty(ValueProperty).GetValue(item, null);
                         var text = item.GetType().GetProperty(TextProperty).GetValue(item, null);
 
-                        <li @key="value" style="display: @(text.ToString().ToLower().Contains(sourceSearch.ToLower()) || string.IsNullOrEmpty(sourceSearch) ? "block" : "none")">
+                        <li @key="value" style="display: @(text.ToString().ToLower().Contains(_targetSearch.ToLower()) || string.IsNullOrEmpty(_targetSearch) ? "block" : "none")">
                             <label class="blazortransfer-item-description" title="@text">
-                                <input class="blazortransfer-checkbox" type="checkbox" value="@value" checked="@allTargetKeysChecked" @onchange="@((e) => TargetCheckboxClicked(e, value))" /> <span>@text</span>
+                                <input class="blazortransfer-checkbox" 
+                                       type="checkbox" 
+                                       value="@value" 
+                                       checked="@(_selectedTargetKeys.Any(x => x.ToString() == value.ToString()))" 
+                                       @onchange="@(e => CheckboxClicked(e, value, _selectedTargetKeys))" /> 
+                                <span>@text</span>
                             </label>
                         </li>
                     }
@@ -79,4 +99,75 @@
             }          
         </div>
     </div>
+}
+
+@code
+{
+    string _sourceSearch = string.Empty;
+    string _targetSearch = string.Empty;
+    List<object> _selectedSourceKeys = new List<object>();
+    List<object> _selectedTargetKeys = new List<object>();
+    IEnumerable<TItem> _value = new List<TItem>();
+
+    [Parameter] public IEnumerable<object> DataSource { get; set; }
+    [Parameter] public string TextProperty { get; set; }
+    [Parameter] public string ValueProperty { get; set; }
+    [Parameter] public bool ShowSearch { get; set; }
+    [Parameter] public string SearchPlaceholder { get; set; } = "Type to search";
+    [Parameter] public string HeaderText { get; set; } = "items";
+    [Parameter] public EventCallback<IEnumerable<TItem>> Change { get; set; }
+    [Parameter] public EventCallback<IEnumerable<TItem>> ValueChanged { get; set; }
+
+    [Parameter]
+    public IEnumerable<TItem> Value
+    {
+        get => _value;
+        set
+        {
+            if (_value.Equals(value)) return;
+
+            _value = value;
+            ValueChanged.InvokeAsync(value);
+        }
+    }
+
+    void CheckboxClicked(ChangeEventArgs e, object value, List<object> selected)
+    {
+        if ((bool)e.Value)
+        {
+            selected.Add(value);
+        }
+        else
+        {
+            selected.Remove(value);
+        }
+    }
+
+    void SelectAllCheckboxClicked(ChangeEventArgs e, IEnumerable<object> items, List<object> selected)
+    {
+        selected.Clear();
+
+        if ((bool)e.Value)
+        {
+            selected.AddRange(items.Select(x => x.GetType().GetProperty(ValueProperty).GetValue(x, null)));
+        }
+    }
+
+    async Task AddTargetKeys()
+    {
+        var selected = _selectedSourceKeys.Cast<TItem>();
+        await Change.InvokeAsync(selected);
+
+        Value = Value.Concat(selected).ToList();
+        _selectedSourceKeys.Clear();
+    }
+
+    async Task RemoveTargetKeys()
+    {
+        var selected = _selectedTargetKeys.Cast<TItem>();
+        await Change.InvokeAsync(selected);
+
+        Value = Value.Except(selected).ToList();
+        _selectedTargetKeys.Clear();
+    }
 }
