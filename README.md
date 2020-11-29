@@ -1,24 +1,18 @@
 # BlazorTransfer
 A JavaScript free Transfer (Dual List) library for [Blazor](https://blazor.net) applications
 
-![Nuget](https://img.shields.io/nuget/v/blazortransfer)
+[![NuGet Status](https://img.shields.io/nuget/v/blazortransfer)](https://www.nuget.org/packages/BlazorTransfer/)
 
 ![gif of component in action](screenshot.gif)
 
 ## Getting Setup
 You can add them searching *BlazorTransfer* in the Nuget Package Manager or from command line by running *dotnet add package BlazorTransfer*
 
-### 1. Add Imports
+### Add Imports
 Add the following to your *_Imports.razor*
 
 ```csharp
 @using TransferBlazor
-```
-### 2. Add reference to style sheet(s)
-Add the following line to the `head` tag of your `_Host.cshtml` (Blazor Server app) or `index.html` (Blazor WebAssembly).
-
-```
-<link rel="stylesheet" href="_content/BlazorTransfer/blazor-transfer.css" />
 ```
 
 ## Wiki

@@ -14,13 +14,13 @@
     border-radius: 3px;
 }
 
-.blazortransfer-list ul {
-    margin: 0;
-    padding: 0;
-    list-style-type: none;
-    overflow: auto;
-    height: 135px;
-}
+    .blazortransfer-list ul {
+        margin: 0;
+        padding: 0;
+        list-style-type: none;
+        overflow: auto;
+        height: 135px;
+    }
 
 .blazortransfer-button {
     border: 1px solid #007bff;
@@ -58,19 +58,19 @@
     margin: 5px;
 }
 
-.blazortransfer-search input {
-    border: 1px solid #d9d9d9;
-    border-radius: 3px;
-    padding-left: 10px;
-    padding-top: 5px;
-    padding-right: 5px;
-    padding-bottom: 5px;
-    width: 100%;
-}
-
-    .blazortransfer-search input::placeholder {
-        color: #d9d9d9;
+    .blazortransfer-search input {
+        border: 1px solid #d9d9d9;
+        border-radius: 3px;
+        padding-left: 10px;
+        padding-top: 5px;
+        padding-right: 5px;
+        padding-bottom: 5px;
+        width: 100%;
     }
+
+        .blazortransfer-search input::placeholder {
+            color: #d9d9d9;
+        }
 
 .blazortransfer-header {
     margin-top: 5px;

@@ -1,22 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
 
   <PropertyGroup>
-    <TargetFramework>netstandard2.1</TargetFramework>
-    <RazorLangVersion>3.0</RazorLangVersion>
+    <TargetFramework>net5.0</TargetFramework>
     <RootNamespace>TransferBlazor</RootNamespace>
     <Description>A JavaScript free Transfer (Dual List) library for Blazor applications</Description>
     <Authors>Juxant</Authors>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageTags>Blazor, Components, Transfer, Dual, List, DualList, In, Out, inOut</PackageTags>
     <RepositoryUrl>https://github.com/juxant/BlazorTransfer</RepositoryUrl>
-    <Version>1.0.6</Version>
+    <Version>1.1.0</Version>
     <PackageProjectUrl>https://github.com/juxant/BlazorTransfer</PackageProjectUrl>
   </PropertyGroup>
 
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="Microsoft.AspNetCore.Components" Version="3.1.5" />
-    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="3.1.5" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="5.0.0" />
   </ItemGroup>
 
 </Project>
